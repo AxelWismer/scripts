@@ -1,5 +1,6 @@
 import unittest
 from generador import Generador
+import estadistica
 
 class TestGenerador(unittest.TestCase):
     def test_truncate(self):
@@ -9,6 +10,11 @@ class TestGenerador(unittest.TestCase):
         self.assertEqual(gen.truncate(0.1234567), 0.12)
 
     def test_rnd(self):
-        gen = Generador(x=10, c=12, k=3, g=10)
-        self.assertEqual(0.0224609375, gen.rnd())
+        gen = Generador(x=6, c=7, k=3, g=3)
+        self.assertEqual(13, gen.a)
+        self.assertEqual(8, gen.m)
+
+        self.assertEqual(0.625, estadistica.truncate(gen.rnd(), 4))
+        self.assertEqual(5, gen.x)
         self.assertNotEqual(gen.rnd(), gen.rnd())
+

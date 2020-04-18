@@ -151,39 +151,60 @@ class Tabla():
 
     def reagrupar_intervalos_ascendente(self, intervalos):
         intervalos_new = []
-        # Acumuladores de las frecuencias esperada y observadas
-        fe_acum = fo_acum = 0
+        inicio = 0
+        # Se itera por los intervalos
         for i in range(len(intervalos)):
-            if intervalos[i].fe >= 5:
+            # Si el elemto actual es mayor que 5 se corta el algoritmo
+            if intervalos[inicio].fe >= 5:
                 break
-            for j in range(i, len(intervalos)):
+            # Acumuladores de las frecuencias esperada y observadas
+            fe_acum = fo_acum = 0
+            # Si es menor a 5 se itera el resto del vector acumulando la frecuencia
+            # esperada hasta que el valor es mayor a 5
+            for j in range(inicio, len(intervalos)):
                 fe_acum += intervalos[j].fe
                 fo_acum += intervalos[j].fo
                 if fe_acum >= 5:
-                    interv = self.Intervalo(intervalos[i].inicio, intervalos[j].fin, self.decimals)
+                    # Se crea un intervalo que inicia en el primer intervalo y finaliza en el intervalo que cumplio que
+                    # fe_acum sea mayor que 5
+                    interv = self.Intervalo(intervalos[inicio].inicio, intervalos[j].fin, self.decimals)
                     interv.fe = fe_acum
                     interv.fo = fo_acum
                     intervalos_new.append(interv)
-                    i = j
+                    # Se setea como inicio el intervalo siguiente al ultimo que incluimos en nuestro
+                    # intervalo para repetir el proceso
+                    inicio = j + 1
+                    # Se termina este ciclo porque ya no se busca mas intervalos para generar este intervalo
                     break
         return intervalos_new, j
 
+
     def reagrupar_intervalos_descendente(self, intervalos):
         intervalos_new = []
-        # Acumuladores de las frecuencias esperada y observadas
-        fe_acum = fo_acum = 0
+        inicio = 0
+        # Se itera por los intervalos
         for i in range(len(intervalos)):
-            if intervalos[i].fe >= 5:
+            # Si el elemto actual es mayor que 5 se corta el algoritmo
+            if intervalos[inicio].fe >= 5:
                 break
-            for j in range(i, len(intervalos)):
+            # Acumuladores de las frecuencias esperada y observadas
+            fe_acum = fo_acum = 0
+            # Si es menor a 5 se itera el resto del vector acumulando la frecuencia
+            # esperada hasta que el valor es mayor a 5
+            for j in range(inicio, len(intervalos)):
                 fe_acum += intervalos[j].fe
                 fo_acum += intervalos[j].fo
                 if fe_acum >= 5:
-                    interv = self.Intervalo(intervalos[j].inicio, intervalos[i].fin, self.decimals)
+                    # Se crea un intervalo que inicia en el primer intervalo y finaliza en el intervalo que cumplio que
+                    # fe_acum sea mayor que 5
+                    interv = self.Intervalo(intervalos[j].inicio, intervalos[inicio].fin, self.decimals)
                     interv.fe = fe_acum
                     interv.fo = fo_acum
                     intervalos_new.append(interv)
-                    i = j
+                    # Se setea como inicio el intervalo siguiente al ultimo que incluimos en nuestro
+                    # intervalo para repetir el proceso
+                    inicio = j + 1
+                    # Se termina este ciclo porque ya no se busca mas intervalos para generar este intervalo
                     break
         return intervalos_new, j
 
@@ -191,20 +212,28 @@ class Tabla():
     # agrupandolos con los del centro hasta que todos los grupos tengan un fe > 5
     def reagrupar_intervalos(self):
         # Una copia de los intervalos originales
-        intervalos = self.intervalos.copy()
+        intervalos = self.intervalos
         # Si el primer valor es menor a 5 recorre la lista en orden
         # ascendente reagrupando los intervalos para que su fe sea mayo a 5
         intervalos_asc = intervalos_desc = []
         inicio_intervalo_original = - 1
-        fin_intervalo_original = 1
+        fin_intervalo_original = - 1
+
+        # Calcula los nuevos intervalos de forma ascendente
         if intervalos[0].fe < 5:
             intervalos_asc, inicio_intervalo_original = self.reagrupar_intervalos_ascendente(intervalos)
+
+        # Calcula los nuevos intervalos de forma descendente
         if intervalos[-1].fe < 5:
+            # Genera una copia de los intervalos originales y la invierte
             intervalos_reverse = intervalos.copy()
             intervalos_reverse.reverse()
+            # Calcula los nuevos intervalos y los invierte dado que la funcion los devuelve en orden inverso
             intervalos_desc, fin_intervalo_original = self.reagrupar_intervalos_descendente(intervalos_reverse)
             intervalos_desc.reverse()
 
+        # Genera la lista uniendo la lista de nuevos intervalos en orden ascendente, los intervalos que no se
+        # modeificaron y los nuevos intervalos calculados de forma descendente
         intervalos_asc.extend(intervalos[inicio_intervalo_original + 1: len(self.intervalos) - 1 - fin_intervalo_original])
         intervalos_asc.extend(intervalos_desc)
         self.intervalos_reorganizados = intervalos_asc
@@ -282,9 +311,9 @@ class Exponencial(Tabla):
         for interv in self.intervalos:
             # Calcula el area dada por la diferencia de las frecuencias acumuladas
             # y lo multiplica por la cantidad de datos
-            interv.fe = self.truncate(len(self.datos) * \
+            interv.fe = len(self.datos) * \
                         (estadistica.acumulada_exponencial(interv.fin, lam)
-                         - estadistica.acumulada_exponencial(interv.inicio, lam)))
+                         - estadistica.acumulada_exponencial(interv.inicio, lam))
 
     def get_lambda(self):
         return 1 / estadistica.media(self.datos)

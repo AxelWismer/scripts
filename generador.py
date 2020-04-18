@@ -57,7 +57,7 @@ class Generador():
         if self.random:
             return random.random()
         # Se calcula y guarda el proximo valor de x
-        self.x = (self.a + self.x + self.m) % self.m
+        self.x = (self.a * self.x + self.c) % self.m
         # Se calcula el numero aleatoreo y se lo trunca
         return self.x / self.m
 
