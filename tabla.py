@@ -289,7 +289,6 @@ class Exponencial(Tabla):
     def get_lambda(self):
         return 1 / estadistica.media(self.datos)
 
-
 class Normal(Tabla):
     def __init__(self, datos, num_intervalos, valor_minimo=None, valor_maximo=None, decimals=4):
         super(Normal, self).__init__(datos, num_intervalos, valor_minimo, valor_maximo, decimals)
@@ -358,9 +357,9 @@ class Poisson(Tabla):
         for i in range(self.num_intervalos):
             self.intervalos[i] = self.Intervalo(inicio=i, fin=i+1, decimals=self.decimals)
 
-    # def datos_esperados(self):
-    #     frec_esperada = []
-    #     # genera fe numeros en cada intervalo para simular la frecuencia esperada
-    #     for intervalo in self.intervalos:
-    #         frec_esperada.extend([round(intervalo.inicio, self.decimals)] * int(estadistica.truncate(intervalo.fe, 0)))
-    #     return frec_esperada
+    def datos_esperados(self):
+        frec_esperada = []
+        # genera fe numeros en cada intervalo para simular la frecuencia esperada
+        for intervalo in self.intervalos:
+            frec_esperada.extend([intervalo.inicio] * int(round(intervalo.fe, 0)))
+        return frec_esperada

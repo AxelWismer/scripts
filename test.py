@@ -14,8 +14,10 @@ def prueba_uniforme(random):
 
 # Exponencial
 def prueba_exponencial(random):
-    gen = Generador(x=12, c=40, k=27, g=2, decimals=4, random=random)
+    gen = Generador(x=12, c=40, k=27, g=14, decimals=4, random=random)
     datos = gen.exponencial(lam=10, n=1000)
+    print(datos)
+
     tabla = Exponencial(num_intervalos=10, datos=datos, decimals=4)
     tabla.chi()
     print(tabla)
@@ -23,7 +25,7 @@ def prueba_exponencial(random):
 
 # Normal
 def prueba_normal(random, box=True):
-    gen = Generador(x=12, c=40, k=27, g=10, decimals=4, random=random)
+    gen = Generador(x=12, c=40, k=27, g=14, decimals=4, random=random)
     datos = gen.normal(media=0, desviacion=1, n=1000, box=box)
     tabla = Normal(num_intervalos=10, datos=datos, decimals=4)
     tabla.chi()
@@ -32,25 +34,17 @@ def prueba_normal(random, box=True):
 
 # Poisson
 def prueba_poisson(random):
-    gen = Generador(x=12, c=40, k=27, g=10, decimals=4, random=random)
-    datos = gen.poisson(lam=10, n=1000)
+    gen = Generador(x=12, c=40, k=27, g=14, decimals=4, random=random)
+    datos = gen.poisson(lam=1, n=1000)
+    print(max(datos))
     tabla = Poisson(datos=datos, decimals=4)
     tabla.chi()
     print(tabla)
     tabla.histogram()
 
-# random = True
-# prueba_uniforme(random)
-# prueba_exponencial(random)
-# prueba_normal(random)
-# prueba_normal(random, box=False)
-# prueba_poisson(random)
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-x = [0,5,9,10,15]
-y = [0,1,2,3,4]
-plt.plot(x,y)
-plt.xticks(np.arange(min(x), max(x)+1, 1.0))
-plt.show()
+random = False
+prueba_uniforme(random)
+prueba_exponencial(random)
+prueba_normal(random)
+prueba_normal(random, box=False)
+prueba_poisson(random)
