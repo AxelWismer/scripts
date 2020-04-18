@@ -1,5 +1,5 @@
 import unittest
-from generadores import Generador
+from generador import Generador
 
 class TestGenerador(unittest.TestCase):
     def test_truncate(self):

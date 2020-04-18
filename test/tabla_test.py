@@ -1,5 +1,5 @@
 import unittest
-from generadores import Tabla
+from tabla import Tabla, Uniforme, Exponencial, Normal, Poisson
 
 # Muestras
 muestra_1 = [0.15, 0.22, 0.41, 0.65, 0.84, 0.81, 0.62, 0.45, 0.32, 0.07, 0.11, 0.29, 0.58, 0.73, 0.93, 0.97, 0.79, 0.55,
@@ -10,8 +10,8 @@ muestra_2 = [0.10, 0.25, 1.53, 2.83, 3.50, 4.14, 5.65, 6.96, 7.19, 8.25, 1.20, 5
 class TestChiUniforme(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.tabla = Tabla(num_intervalos=5, datos=muestra_1, valor_minimo=0, valor_maximo=1, decimals=2)
-        cls.tabla.chi_uniforme()
+        cls.tabla = Uniforme(num_intervalos=5, datos=muestra_1, valor_minimo=0, valor_maximo=1, decimals=2)
+        cls.tabla.chi()
         cls.fe = fe = []
         cls.fo = fo = []
         cls.c = c = []

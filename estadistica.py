@@ -11,20 +11,7 @@ def media(v):
         return 0
     return sum(v) / len(v)
 
-def varianza(v, med=None):
-    if med is None:
-        med = media(v)
-    if len(v) == 0:
-        return 0
-    acum = 0
-    for num in v:
-        acum += (num - med) ** 2
-    return acum / len(v)
-
-def desviacion(v, media=None):
-    return math.sqrt(varianza(v, media))
-
-def varianza_normal(v):
+def varianza(v):
     med = media(v)
     if len(v) == 0:
         return 0
@@ -33,9 +20,8 @@ def varianza_normal(v):
         acum += (num - med) ** 2
     return acum / (len(v) - 1)
 
-def desviacion_normal(v):
-    print(varianza_normal(v))
-    return math.sqrt(varianza_normal(v))
+def desviacion(v):
+    return math.sqrt(varianza(v))
 
 # Funciones de densidad
 def densidad_uniforme(a, b):
