@@ -234,9 +234,12 @@ class Tabla():
 
         # Genera la lista uniendo la lista de nuevos intervalos en orden ascendente, los intervalos que no se
         # modeificaron y los nuevos intervalos calculados de forma descendente
-        intervalos_asc.extend(intervalos[inicio_intervalo_original + 1: len(self.intervalos) - 1 - fin_intervalo_original])
-        intervalos_asc.extend(intervalos_desc)
-        self.intervalos_reorganizados = intervalos_asc
+        if inicio_intervalo_original==-1 and fin_intervalo_original==-1:
+            self.intervalos_reorganizado = self.Intervalos
+        else:
+            intervalos_asc.extend(intervalos[inicio_intervalo_original + 1: len(self.intervalos) - 1 - fin_intervalo_original])
+            intervalos_asc.extend(intervalos_desc)
+            self.intervalos_reorganizados = intervalos_asc
 
     # Genera los datos para simular la frecuencia esperada
     def datos_esperados(self):
