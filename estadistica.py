@@ -25,7 +25,7 @@ def desviacion(v):
 
 # Funciones de densidad
 def densidad_uniforme(a, b):
-    return 1 / b - a
+    return 1 / (b - a)
 
 def densidad_exponencial(x, lam):
     return lam * math.exp(-lam * x)
