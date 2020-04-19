@@ -33,6 +33,7 @@ def densidad_exponencial(x, lam):
 def densidad_normal(x, media, desviacion):
     return (1 / (desviacion * math.sqrt(2 * math.pi))) * math.exp(-0.5 * (((x - media) / desviacion) ** 2))
 
+
 def densidad_poisson(x, lam):
     return (lam ** x * math.exp(-lam)) / math.factorial(x)
 

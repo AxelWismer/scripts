@@ -19,7 +19,6 @@ class TestChiUniforme(unittest.TestCase):
         cls.fe = fe = []
         cls.fo = fo = []
         cls.c = c = []
-        print(cls.tabla)
         for interv in cls.tabla.intervalos:
             fe.append(interv.fe)
             fo.append(interv.fo)
@@ -45,14 +44,12 @@ class TestChiExponencial(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.tabla = Exponencial(num_intervalos=10, datos=muestra_2, valor_minimo=0, valor_maximo=10, decimals=2)
         cls.tabla.chi()
-        print(cls.tabla)
         cls.fe = fe = []
         cls.fo = fo = []
         # Para los intervalos reorganizados
         cls.fe_reorg = fe_reorg = []
         cls.fo_reorg = fo_reorg = []
         cls.c = c = []
-        print(cls.tabla)
         for interv in cls.tabla.intervalos:
             fe.append(round(interv.fe, 5))
             fo.append(interv.fo)
@@ -95,14 +92,12 @@ class TestChiNormal(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.tabla = Normal(datos = muestra_3, num_intervalos = 10, valor_minimo=0, valor_maximo=10, decimals=2)
         cls.tabla.chi()
-        print(cls.tabla)
         cls.fe = fe = []
         cls.fo = fo = []
         # Para los intervalos reorganizados
         cls.fe_reorg = fe_reorg = []
         cls.fo_reorg = fo_reorg = []
         cls.c = c = []
-        print(cls.tabla)
         for interv in cls.tabla.intervalos:
             fe.append(round(interv.fe, 5))
             fo.append(interv.fo)
@@ -126,7 +121,7 @@ class TestChiNormal(unittest.TestCase):
     def test_fe(self):
         pass
         #Hay diferencias decimales que no son por redondeo
-        #self.assertListEqual([0.15653,0.76432,2.47108,5.28976,7.49761,7.03635,4.37229,1.79891,0.49006,0.08839], self.fe)
+        self.assertListEqual([0.15653,0.76432,2.47108,5.28976,7.49761,7.03635,4.37229,1.79891,0.49006,0.08839], self.fe)
 
     def test_fo(self):
         self.assertListEqual([0,1,3,4,8,7,5,2,0,0], self.fo)
@@ -135,7 +130,7 @@ class TestChiNormal(unittest.TestCase):
     def test_fe_reorg(self):
         pass
         # RT al anterior
-        #self.assertListEqual([8.68170,7.49761,7.03635,6.74965], self.fe_reorg)
+        self.assertListEqual([8.68170,7.49761,7.03635,6.74965], self.fe_reorg)
 
     def test_fo_reorg(self):
         self.assertListEqual([8,8,7,7], self.fo_reorg)
@@ -143,12 +138,12 @@ class TestChiNormal(unittest.TestCase):
     def test_c(self):
         pass
         # Como los Fe estan man su correspondiente C va a estar mal
-        #self.assertListEqual([0.05353,0.03366,0.00019,0.00929], self.c)
+        self.assertListEqual([0.05353,0.03366,0.00019,0.00929], self.c)
 
     def test_c_acum(self):
         pass
         # Idem a anterior, C estan mal
-        #self.assertEqual(0.0967, round(self.tabla.c_acum, 4))
+        self.assertEqual(0.0967, round(self.tabla.c_acum, 4))
 
 
 class TestChiPoisson(unittest.TestCase):

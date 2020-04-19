@@ -340,7 +340,7 @@ class Normal(Tabla):
             # Calcula la densidad normal y lo multiplica por  el largo del intervalo para obtener el area aproximada
             # y lo multiplica por la cantidad de datos para que sea proporcional
             interv.fe = estadistica.densidad_normal(interv.x, media=self.get_media(), desviacion=self.get_desviacion()) \
-                        * (interv.fin - interv.inicio) * len(self.datos)
+                        * len(self.datos)
 
     def get_media(self):
         return estadistica.media(self.datos)
