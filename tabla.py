@@ -275,6 +275,7 @@ class Tabla():
         plt.show()
         plt.close()
 
+
 class Uniforme(Tabla):
     def __init__(self, datos, num_intervalos, valor_minimo=None, valor_maximo=None, decimals=4):
         super(Uniforme, self).__init__(datos, num_intervalos, valor_minimo, valor_maximo, decimals)
@@ -294,6 +295,7 @@ class Uniforme(Tabla):
     def chi(self):
         self.set_c_acum()
         return self.c_acum, self.v
+
 
 class Exponencial(Tabla):
     def __init__(self, datos, num_intervalos, valor_minimo=None, valor_maximo=None, decimals=4):
@@ -317,6 +319,7 @@ class Exponencial(Tabla):
 
     def get_lambda(self):
         return 1 / estadistica.media(self.datos)
+
 
 class Normal(Tabla):
     def __init__(self, datos, num_intervalos, valor_minimo=None, valor_maximo=None, decimals=4):

@@ -81,3 +81,11 @@ class TestChiExponencial(unittest.TestCase):
 
     def test_c_acum(self):
         self.assertEqual(0.3880, round(self.tabla.c_acum, 4))
+
+
+# Completar
+class TestChiNormal(unittest.TestCase):
+    pass
+
+class TestChiPoisson(unittest.TestCase):
+    pass
