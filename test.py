@@ -42,7 +42,7 @@ def prueba_poisson(random):
     print(tabla)
     tabla.histogram()
 
-random = False
+random = True
 prueba_uniforme(random)
 prueba_exponencial(random)
 prueba_normal(random)
