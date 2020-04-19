@@ -113,7 +113,6 @@ class Generador():
             if rnd1 == 0: rnd1 += a
             if rnd2 == 0: rnd2 += a
 
-
             # calcula los 2 valores del metodo
             n1 = self.truncate((math.sqrt(-2 * math.log(rnd1)) * math.cos(2 * math.pi * rnd2)) * desviacion + media)
             n2 = self.truncate((math.sqrt(-2 * math.log(rnd1)) * math.sin(2 * math.pi * rnd2)) * desviacion + media)
