@@ -143,13 +143,14 @@ class TestChiNormal(unittest.TestCase):
         # Idem a anterior, C estan mal
         self.assertEqual(0.0967, round(self.tabla.c_acum, 4))
 
-
+#Falta terminar
 class TestChiPoisson(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.tabla = Poisson(datos = muestra_4, decimals=2)
         cls.tabla.chi()
         cls.intervalos = intervalos = []
+        cls.intervalos_reorganizados = intervalos_reorganizados = []
         cls.fe = fe = []
         cls.fo = fo = []
         # Para los intervalos reorganizados
@@ -160,11 +161,11 @@ class TestChiPoisson(unittest.TestCase):
         #Prq al ser Poisson no uso decimales
         for interv in cls.tabla.intervalos:
             intervalos.append(interv.inicio)
-        for interv in cls.tabla.intervalos:
             fe.append(round(interv.fe, 0))
             fo.append(interv.fo)
         for interv in cls.tabla.intervalos_reorganizados:
-            fe_reorg.append(round(interv.fe, 5))
+            intervalos_reorganizados.append(interv.fin)
+            fe_reorg.append(round(interv.fe, 0))
             fo_reorg.append(interv.fo)
             c.append(round(interv.c, 5))
 
@@ -174,19 +175,6 @@ class TestChiPoisson(unittest.TestCase):
     #En el calculo del fe
     def test_lamda(self):
         self.assertEqual(15, self.tabla.get_lambda())
-
-    def test_media(self):
-        pass
-        #self.assertEqual(4.8410, round(estadistica.media(self.tabla.datos), 4))
-
-
-    def test_varianza(self):
-        pass
-        #self.assertEqual(2.43, round(estadistica.varianza(self.tabla.datos), 2))
-
-    def test_desviacion(self):
-        pass
-        #self.assertEqual(1.5574, round(estadistica.desviacion(self.tabla.datos),4))
 
     #Comprobar que los intervalos estan bien armados
     def test_intervalos(self):
@@ -198,22 +186,26 @@ class TestChiPoisson(unittest.TestCase):
     def test_fe(self):
         self.assertListEqual([1,1,2,2,3,4,5,5,5,5,4,4,3,2,1,1,1,0], self.fe)
 
-    # Intervalos reorganizados
-    def test_fe_reorg(self):
+    # Compara el FIN de intervalos reorganizados
+    def test_intervalos_reorg(self):
         pass
-        # RT al anterior
-        #self.assertListEqual([8.68170,7.49761,7.03635,6.74965], self.fe_reorg)
+        #self.assertListEqual([10,12,13,14,15,16,18,24], self.intervalos_reorganizados)
+
+    # El resto de los valores van a estar mal por ende
+    def test_fo_reorg(self):
+        pass
+        #self.assertListEqual([6,5,6,5,6,6,9,7], self.fo_reorg)
 
     def test_fo_reorg(self):
         pass
-        #self.assertListEqual([8,8,7,7], self.fo_reorg)
+        #self.assertListEqual([6,7,5,5,5,5,8,8], self.fe_reorg)
 
     def test_c(self):
         pass
         # Como los Fe estan man su correspondiente C va a estar mal
-        #self.assertListEqual([0.05353,0.03366,0.00019,0.00929], self.c)
+        #self.assertListEqual([0.0000,0.5714,0.2000,0.0000,0.2000,0.2000,0.1250,0.1250], self.c)
 
     def test_c_acum(self):
         pass
         # Idem a anterior, C estan mal
-        #self.assertEqual(0.0967, round(self.tabla.c_acum, 4))
+        #self.assertEqual(1.4214, round(self.tabla.c_acum, 4))

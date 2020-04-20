@@ -6,11 +6,15 @@ class Tabla():
     intervalos = []
     intervalos_reorganizados = []
     c_acum = 0
+    prob_fo_acu = 0
+    prob_fe_acu = 0
+    dif_prob_acu_max = 0
     valor_minimo = 0
     valor_maximo = 0
     num_intervalos = 0
     datos = []
     v = 0
+    metodo = ""
 
     class IndivisibleData(Exception):
         pass
@@ -39,6 +43,7 @@ class Tabla():
 
     def __str__(self):
         r = "Tabla: "
+        r += "Metodo: " + str(self.metodo) + '\n'
         r += "valor minimo: " + str(self.valor_minimo) + ", valor maximo: " + str(self.valor_maximo) \
             + ", numero de intervalos: " + str(self.num_intervalos) + ", c acumulado: " \
              + str(round(self.c_acum, self.decimals)) + ', v: ' + str(self.v) + '\n'
@@ -60,6 +65,14 @@ class Tabla():
             digits = self.decimals
         return estadistica.truncate(number, digits)
 
+    def determinar_metodo(self):
+        if len(self.datos)>=30:
+            self.metodo = "Ji Cuadrado"
+            self.chi()
+        else:
+            self.metodo = "Komolgorov Smirnov"
+            self.komolgorov_smirnov()
+
 
     # Clase que representa cada fila de la tabla con sus atributos
     class Intervalo():
@@ -67,6 +80,13 @@ class Tabla():
         fin = 0
         fo = 0
         fe = 0
+        # Agrego estas dos variables de prob para el metodo KS
+        prob_fo = 0
+        prob_fe = 0
+        prob_fo_acu = 0
+        prob_fe_acu = 0
+        dif_prob_acu = 0
+        dif_prob_acu_max = 0
         c_acum = 0
         decimals = 0
 
@@ -142,6 +162,45 @@ class Tabla():
     # Calcula el valor de v para ver si se refuta o no la hipotesis
     def set_v(self):
         raise Exception("No se puede llamar a este metodo en la clase padre")
+
+    # Completa la tabla segun el metodo de Komolgorov Smirnov    
+    def komolgorov_smirnov(self):
+        # Calculo las prob de Fo y Fe asi como sus acumuladas
+        self.set_prob()
+        # Calculo la columna de la diferencia entre ambas
+        self.set_dif_prob_acu()
+        return self.c_acum, self.v
+
+    def set_prob(self):
+        intervalos = self.intervalos
+        prob_fo_acu = 0
+        prob_fe_acu = 0
+        for i in len(intervalos):
+            intervalos[i].prob_fo = intervalos[i].fo/len(self.datos)
+            # la probabilidad de fe ya la calculamos con la funcion de densidad
+            intervalos[i].prob_fe = intervalos[i].fe/len(self.datos)
+            # Calculando la prob acumulada para cada intervalo
+            prob_fo_acu += intervalos[i].prob_fo_acu
+            intervalos[i].prob_fo_acu = prob_fo_acu 
+            # Lo mismo para la Fe
+            prob_fe_acu += intervalos[i].prob_fe_acu
+            intervalos[i].prob_fe_acu = prob_fe_acu
+        # Una vez calculado las Prob acum de Fe y Fo de todas las filas
+        # Guardas el valor de las prob acu de la tabla
+        self.prob_fo_acu = prob_fo_acu
+        self.prob_fe_acu = prob_fe_acu 
+
+    def set_dif_prob_acu(self):
+        intervalos = self.intervalos
+        dif_prob_acu_max = 0
+        for i in len(intervalos):
+            # Valor absoluto de la diferencia
+            intervalos[i].dif_prob_acu = abs(intervalos[i].prob_fo_acu - intervalos[i].prob_fe_acu)
+            if intervalos[i].dif_prob_acu>dif_prob_acu_max:
+                dif_prob_acu_max = intervalos[i].dif_prob_acu
+                intervalos[i].dif_prob_acu_max = dif_prob_acu_max
+        self.dif_prob_acu_max = dif_prob_acu_max
+
 
     # Completa la tabla segun el metodo de chi
     def chi(self):
