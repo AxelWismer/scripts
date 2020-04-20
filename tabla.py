@@ -353,7 +353,9 @@ class Normal(Tabla):
 class Poisson(Tabla):
     def __init__(self, datos, decimals=4):
         self.datos = datos
-        self.num_intervalos = max(datos) + 1
+        #Si dejo solo max(datos) no tomo en cuenta que pasa si 
+        #Los datos no arrancan en 0
+        self.num_intervalos = max(datos) - min(datos) + 1 
         self.decimals = decimals
         self.generar_intervalos()
         self.conteo_frecuencias()
@@ -385,13 +387,13 @@ class Poisson(Tabla):
             interv.fe = estadistica.densidad_poisson(int(interv.inicio), lam=self.get_lambda()) * len(self.datos)
 
     def get_lambda(self):
-        return estadistica.media(self.datos)
+        return round(estadistica.media(self.datos),0)
 
     def generar_intervalos(self):
         # Para poisson genera tantos intervalos como valores distintos posibles existan
         self.intervalos = [0] * self.num_intervalos
         for i in range(self.num_intervalos):
-            self.intervalos[i] = self.Intervalo(inicio=i, fin=i+1, decimals=self.decimals)
+            self.intervalos[i] = self.Intervalo(inicio=i+min(self.datos), fin=min(self.datos)+i, decimals=self.decimals)
 
     def datos_esperados(self):
         frec_esperada = []
